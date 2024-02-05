@@ -145,6 +145,33 @@ public class GeneradorD {
             arr[i] = output[i];
     }
 
+        // Método adicional para el algoritmo de sort nuestra elección
+        public static void shellSort(int[] arr) {
+        int n = arr.length;
     
+        // Empezar con un intervalo grande, luego reducir el intervalo
+        for (int interval = n / 2; interval > 0; interval /= 2) {
+            // Hacer un ordenamiento por inserción para este intervalo. Los primeros elementos
+            // interval están ya en el intervalo correcto, seguir añadiendo uno más
+            // hasta que todo el arreglo esté ordenado
+            for (int i = interval; i < n; i += 1) {
+                // Añadir arr[i] a los elementos que han sido ordenados, guardar arr[i]
+                // en temp y hacer un hueco en la posición i
+                int temp = arr[i];
+                
+                // Mover los elementos del arreglo arr[0..i-1], que son
+                // mayores que temp, a una posición adelante de su
+                // posición actual
+                int j;
+                for (j = i; j >= interval && arr[j - interval] > temp; j -= interval) {
+                    arr[j] = arr[j - interval];
+                }
+                
+                // Poner temp (el original arr[i]) en su posición correcta
+                arr[j] = temp;
+            }
+        }
+    }
+
 
 }
