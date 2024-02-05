@@ -26,6 +26,19 @@ public class Driver {
 
             default:
                 System.out.println("Opción no válida.");
+                break;
+            
+            case 3:
+                GeneradorD.quickSort(numerosAleatorios, 0, numerosAleatorios.length - 1);
+                break;
+
+            case 4:
+                GeneradorD.radixSort(numerosAleatorios);
+                break;
+
+            case 5:
+                GeneradorD.shellSort(numerosAleatorios);
+                break;
         }
 
         // Opcional: Escribir los números ordenados en un archivo o imprimirlos en consola
