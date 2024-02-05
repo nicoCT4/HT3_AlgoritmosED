@@ -115,5 +115,36 @@ public class GeneradorD {
     
         return i+1;
     }
+    
+    // Un método para hacer un conteo de orden de arr[] de acuerdo a
+    // el dígito representado por exp.
+    private static void countSort(int[] arr, int n, int exp) {
+        int[] output = new int[n]; // arreglo de salida
+        int i;
+        int[] count = new int[10];
+        Arrays.fill(count, 0);
+
+        // Almacenar el conteo de ocurrencias en count[]
+        for (i = 0; i < n; i++)
+            count[(arr[i] / exp) % 10]++;
+
+        // Cambiar count[i] para que count[i] ahora contenga
+        // la posición actual de este dígito en output[]
+        for (i = 1; i < 10; i++)
+            count[i] += count[i - 1];
+
+        // Construir el arreglo de salida
+        for (i = n - 1; i >= 0; i--) {
+            output[count[(arr[i] / exp) % 10] - 1] = arr[i];
+            count[(arr[i] / exp) % 10]--;
+        }
+
+        // Copiar el arreglo de salida a arr[], para que arr[] ahora
+        // contenga los números ordenados de acuerdo a el dígito actual
+        for (i = 0; i < n; i++)
+            arr[i] = output[i];
+    }
+
+    
 
 }
