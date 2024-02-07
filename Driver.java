@@ -34,35 +34,38 @@ public class Driver {
         int choice = scanner.nextInt();
 
         // Generar 3000 números aleatorios
-        Integer[] numerosAleatorios = Arrays.stream(Orden.generarNumerosAleatorios(3000)).boxed().toArray(Integer[]::new);
+        int[] numerosAleatorios = Orden.generarNumerosAleatorios(3000);
+        
+        for (int i = 10; i <= numerosAleatorios.length; i += 290) { // Ajusta el paso según lo necesites
+            Integer[] numerosActuales = Arrays.stream(Arrays.copyOf(numerosAleatorios, i)).boxed().toArray(Integer[]::new);
 
-        // Ordenar según la elección
-        switch (choice) {
-            case 1:
-                GeneradorD.gnomeSort(numerosAleatorios); 
-                Orden.escribirArchivo("numeros_ordenados.txt", numerosAleatorios);
-                break;
-            case 2:
-                GeneradorD.mergeSort(numerosAleatorios, 0, numerosAleatorios.length - 1); 
-                Orden.escribirArchivo("numeros_ordenados.txt", numerosAleatorios);
-                break;
-            case 3:
-                GeneradorD.quickSort(numerosAleatorios, 0, numerosAleatorios.length - 1); 
-                Orden.escribirArchivo("numeros_ordenados.txt", numerosAleatorios);
-                break;
-            case 4:
-                GeneradorD.radixSort(numerosAleatorios);
-                Orden.escribirArchivo("numeros_ordenados.txt", numerosAleatorios);
-                break;
-            case 5:
-                GeneradorD.shellSort(numerosAleatorios); 
-                Orden.escribirArchivo("numeros_ordenados.txt", numerosAleatorios);
-                break;
-            default:
-                System.out.println("Opción no válida.");
-                break;
+            // Ordenar según la elección
+            switch (choice) {
+                case 1:
+                    GeneradorD.gnomeSort(numerosActuales); 
+                    Orden.escribirArchivo("numeros_ordenados_" + i + ".txt", numerosActuales);
+                    break;
+                case 2:
+                    GeneradorD.mergeSort(numerosActuales, 0, numerosActuales.length - 1); 
+                    Orden.escribirArchivo("numeros_ordenados_" + i + ".txt", numerosActuales);
+                    break;
+                case 3:
+                    GeneradorD.quickSort(numerosActuales, 0, numerosActuales.length - 1); 
+                    Orden.escribirArchivo("numeros_ordenados_" + i + ".txt", numerosActuales);
+                    break;
+                case 4:
+                    GeneradorD.radixSort(numerosActuales);
+                    Orden.escribirArchivo("numeros_ordenados_" + i + ".txt", numerosActuales);
+                    break;
+                case 5:
+                    GeneradorD.shellSort(numerosActuales); 
+                    Orden.escribirArchivo("numeros_ordenados_" + i + ".txt", numerosActuales);
+                    break;
+                default:
+                    System.out.println("Opción no válida.");
+                    break;
+            }
         }
         scanner.close();
     }
 }
-
