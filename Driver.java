@@ -18,6 +18,7 @@
  *
  * @param args Los argumentos de la línea de comandos no se utilizan.
  */
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Driver {
@@ -32,33 +33,36 @@ public class Driver {
         System.out.print("Tu elección: ");
         int choice = scanner.nextInt();
 
-        // Generar números aleatorios
-        int[] numerosAleatorios = Orden.generarNumerosAleatorios(3000);
+        // Generar 3000 números aleatorios
+        Integer[] numerosAleatorios = Arrays.stream(Orden.generarNumerosAleatorios(3000)).boxed().toArray(Integer[]::new);
 
-        // Ejecutar el algoritmo seleccionado
+        // Ordenar según la elección
         switch (choice) {
             case 1:
-                GeneradorD.gnomeSort(numerosAleatorios);
+                GeneradorD.gnomeSort(numerosAleatorios); 
+                Orden.escribirArchivo("numeros_ordenados.txt", numerosAleatorios);
                 break;
             case 2:
-                GeneradorD.mergeSort(numerosAleatorios, 0, numerosAleatorios.length - 1);
+                GeneradorD.mergeSort(numerosAleatorios, 0, numerosAleatorios.length - 1); 
+                Orden.escribirArchivo("numeros_ordenados.txt", numerosAleatorios);
                 break;
             case 3:
-                GeneradorD.quickSort(numerosAleatorios, 0, numerosAleatorios.length - 1);
+                GeneradorD.quickSort(numerosAleatorios, 0, numerosAleatorios.length - 1); 
+                Orden.escribirArchivo("numeros_ordenados.txt", numerosAleatorios);
                 break;
             case 4:
                 GeneradorD.radixSort(numerosAleatorios);
+                Orden.escribirArchivo("numeros_ordenados.txt", numerosAleatorios);
                 break;
             case 5:
-                GeneradorD.shellSort(numerosAleatorios);
+                GeneradorD.shellSort(numerosAleatorios); 
+                Orden.escribirArchivo("numeros_ordenados.txt", numerosAleatorios);
                 break;
             default:
                 System.out.println("Opción no válida.");
+                break;
         }
-
-        // Opcional: Escribir los números ordenados en un archivo o imprimirlos en consola
-        Orden.escribirArchivo("numeros_ordenados.txt", numerosAleatorios);
-        
         scanner.close();
     }
 }
+

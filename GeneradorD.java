@@ -73,8 +73,6 @@ public class GeneradorD {
         // Encontrar el máximo número para saber el número de dígitos
         int m = getMax(arr, arr.length);
     
-        // Hacer el conteo de orden para cada dígito. Nota que en vez
-        // de pasar el número de dígito, se pasa exp. exp es 10^i
         // donde i es el número de dígito actual
         for (int exp = 1; m / exp > 0; exp *= 10) {
             countSort(arr, arr.length, exp);
@@ -120,6 +118,19 @@ public class GeneradorD {
         // contenga los números ordenados de acuerdo a el dígito actual
         for (int i = 0; i < n; i++) {
             arr[i] = output[i];
+        }
+    }
+    // Método sobrecargado para aceptar un arreglo de objetos Integer[]
+    public static void radixSort(Integer[] arr) {
+        // Convertir el arreglo de objetos Integer[] a un arreglo de enteros int[]
+        int[] intArr = Arrays.stream(arr).mapToInt(Integer::intValue).toArray();
+        
+        // Llamar al método de ordenamiento con el arreglo de enteros int[]
+        radixSort(intArr);
+        
+        // Convertir el arreglo de enteros ordenados int[] de nuevo a un arreglo de objetos Integer[]
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = intArr[i];
         }
     }
     

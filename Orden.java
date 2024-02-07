@@ -16,13 +16,21 @@ public class Orden {
     }
 
     // Método para escribir el arreglo en un archivo
-    public static void escribirArchivo(String nombreArchivo, int[] arr) {
+    public static void escribirArchivo(String nombreArchivo, Integer[] arr) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreArchivo))) {
             for (int num : arr) {
                 bw.write(num + "\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    // Método para imprimir los números en la consola
+    public static void imprimirNumeros(Integer[] arr) {
+        System.out.println("Números generados:");
+        for (int num : arr) {
+            System.out.println(num);
         }
     }
 }
