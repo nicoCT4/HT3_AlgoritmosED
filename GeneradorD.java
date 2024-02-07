@@ -116,6 +116,26 @@ public class GeneradorD {
         return i+1;
     }
     
+    public static void radixSort(int[] arr) {
+        // Encontrar el máximo número para saber el número de dígitos
+        int m = getMax(arr, arr.length);
+    
+        // Hacer el conteo de orden para cada dígito. Nota que en vez
+        // de pasar el número de dígito, se pasa exp. exp es 10^i
+        // donde i es el número de dígito actual
+        for (int exp = 1; m/exp > 0; exp *= 10)
+            countSort(arr, arr.length, exp);
+    }
+    
+    // Método auxiliar para obtener el valormás grande del arreglo
+    private static int getMax(int[] arr, int n) {
+        int mx = arr[0];
+        for (int i = 1; i < n; i++)
+            if (arr[i] > mx)
+                mx = arr[i];
+        return mx;
+    }
+    
     // Un método para hacer un conteo de orden de arr[] de acuerdo a
     // el dígito representado por exp.
     private static void countSort(int[] arr, int n, int exp) {
@@ -123,27 +143,28 @@ public class GeneradorD {
         int i;
         int[] count = new int[10];
         Arrays.fill(count, 0);
-
+    
         // Almacenar el conteo de ocurrencias en count[]
         for (i = 0; i < n; i++)
             count[(arr[i] / exp) % 10]++;
-
+    
         // Cambiar count[i] para que count[i] ahora contenga
         // la posición actual de este dígito en output[]
         for (i = 1; i < 10; i++)
             count[i] += count[i - 1];
-
+    
         // Construir el arreglo de salida
         for (i = n - 1; i >= 0; i--) {
             output[count[(arr[i] / exp) % 10] - 1] = arr[i];
             count[(arr[i] / exp) % 10]--;
         }
-
+    
         // Copiar el arreglo de salida a arr[], para que arr[] ahora
         // contenga los números ordenados de acuerdo a el dígito actual
         for (i = 0; i < n; i++)
             arr[i] = output[i];
     }
+    
 
         // Método adicional para el algoritmo de sort nuestra elección
         public static void shellSort(int[] arr) {
@@ -172,6 +193,4 @@ public class GeneradorD {
             }
         }
     }
-
-
 }
