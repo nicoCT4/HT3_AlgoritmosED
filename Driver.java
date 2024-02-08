@@ -36,54 +36,39 @@ public class Driver {
         System.out.print("Tu elección: ");
         int choice = scanner.nextInt();
 
-        // Generar 3000 números aleatorios
+        // Generar 3000 números aleatorios y guardarlos en un archivo
         int[] numerosAleatorios = Orden.generarNumerosAleatorios(3000);
+        Orden.escribirArchivo("numeros_ordenados.txt", Arrays.stream(numerosAleatorios).boxed().toArray(Integer[]::new));
 
-        // Nombre del archivo
-        String nombreArchivo = "numeros_ordenados.txt";
+        // Definir el nombre del archivo basado en la elección del algoritmo
+        String nombreArchivoSort = obtenerNombreArchivoSort(choice);
+        
+        if (nombreArchivoSort.equals("")) {
+            System.out.println("Opción no válida.");
+            scanner.close();
+            return;
+        }
 
-        // Contador de números escritos en el archivo
-        int numerosEscritos = 0;
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreArchivoSort))) {
+            for (int i = 1; i <= 3000; i++) {
+                // Tomar un grupo de i + 9 números, empezando con 10
+                int hasta = Math.min(i + 9, 3000);
+                // Primero, crea un subarreglo de tipo primitivo int[]
+                int[] subArrayInt = Arrays.copyOfRange(numerosAleatorios, 0, hasta);
 
-        // Abrir el archivo una vez fuera del bucle for
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreArchivo))) {
-            for (int i = 10; i <= numerosAleatorios.length; i++) {
-                // Calcular cuántos números aleatorios agregar en esta iteración
-                int cantidadNumeros = (i < numerosAleatorios.length) ? i : numerosAleatorios.length - numerosEscritos;
+                // Luego, convierte ese subarreglo a Integer[]
+                Integer[] numerosActuales = Arrays.stream(subArrayInt)
+                                                .boxed()
+                                                .toArray(Integer[]::new);
 
-                // Copiar una porción del arreglo original para ordenar
-                Integer[] numerosActuales = Arrays.stream(Arrays.copyOfRange(numerosAleatorios, 0, numerosEscritos + cantidadNumeros))
-                                                   .boxed().toArray(Integer[]::new);
+                // Ordenar el subconjunto de números
+                ordenarNumeros(numerosActuales, choice);
 
-                // Ordenar según la elección
-                switch (choice) {
-                    case 1:
-                        GeneradorD.gnomeSort(numerosActuales); 
-                        break;
-                    case 2:
-                        GeneradorD.mergeSort(numerosActuales, 0, numerosActuales.length - 1); 
-                        break;
-                    case 3:
-                        GeneradorD.quickSort(numerosActuales, 0, numerosActuales.length - 1); 
-                        break;
-                    case 4:
-                        GeneradorD.radixSort(numerosActuales);
-                        break;
-                    case 5:
-                        GeneradorD.shellSort(numerosActuales); 
-                        break;
-                    default:
-                        System.out.println("Opción no válida.");
-                        break;
-                }
-
-                // Escribir los números ordenados en el archivo
-                for (int num : numerosActuales) {
+                // Escribir los números ordenados en el archivo correspondiente
+                for (Integer num : numerosActuales) {
                     bw.write(num + "\n");
                 }
-
-                // Actualizar el contador de números escritos en el archivo
-                numerosEscritos += cantidadNumeros;
+                bw.write("----\n"); // Separador para indicar una nueva iteración
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -91,6 +76,38 @@ public class Driver {
 
         scanner.close();
     }
+
+    private static String obtenerNombreArchivoSort(int choice) {
+        switch (choice) {
+            case 1: return "gnome_sort.txt";
+            case 2: return "merge_sort.txt";
+            case 3: return "quick_sort.txt";
+            case 4: return "radix_sort.txt";
+            case 5: return "shell_sort.txt";
+            default: return "";
+        }
+    }
+
+    private static void ordenarNumeros(Integer[] numeros, int choice) {
+        switch (choice) {
+            case 1:
+                GeneradorD.gnomeSort(numeros);
+                break;
+            case 2:
+                GeneradorD.mergeSort(numeros, 0, numeros.length - 1);
+                break;
+            case 3:
+                GeneradorD.quickSort(numeros, 0, numeros.length - 1);
+                break;
+            case 4:
+                GeneradorD.radixSort(numeros);
+                break;
+            case 5:
+                GeneradorD.shellSort(numeros);
+                break;
+        }
+    }
 }
+
 
 
