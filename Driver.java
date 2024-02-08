@@ -18,6 +18,9 @@
  *
  * @param args Los argumentos de la línea de comandos no se utilizan.
  */
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -35,37 +38,59 @@ public class Driver {
 
         // Generar 3000 números aleatorios
         int[] numerosAleatorios = Orden.generarNumerosAleatorios(3000);
-        
-        for (int i = 10; i <= numerosAleatorios.length; i += 290) { // Ajusta el paso según lo necesites
-            Integer[] numerosActuales = Arrays.stream(Arrays.copyOf(numerosAleatorios, i)).boxed().toArray(Integer[]::new);
 
-            // Ordenar según la elección
-            switch (choice) {
-                case 1:
-                    GeneradorD.gnomeSort(numerosActuales); 
-                    Orden.escribirArchivo("numeros_ordenados_" + i + ".txt", numerosActuales);
-                    break;
-                case 2:
-                    GeneradorD.mergeSort(numerosActuales, 0, numerosActuales.length - 1); 
-                    Orden.escribirArchivo("numeros_ordenados_" + i + ".txt", numerosActuales);
-                    break;
-                case 3:
-                    GeneradorD.quickSort(numerosActuales, 0, numerosActuales.length - 1); 
-                    Orden.escribirArchivo("numeros_ordenados_" + i + ".txt", numerosActuales);
-                    break;
-                case 4:
-                    GeneradorD.radixSort(numerosActuales);
-                    Orden.escribirArchivo("numeros_ordenados_" + i + ".txt", numerosActuales);
-                    break;
-                case 5:
-                    GeneradorD.shellSort(numerosActuales); 
-                    Orden.escribirArchivo("numeros_ordenados_" + i + ".txt", numerosActuales);
-                    break;
-                default:
-                    System.out.println("Opción no válida.");
-                    break;
+        // Nombre del archivo
+        String nombreArchivo = "numeros_ordenados.txt";
+
+        // Contador de números escritos en el archivo
+        int numerosEscritos = 0;
+
+        // Abrir el archivo una vez fuera del bucle for
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreArchivo))) {
+            for (int i = 10; i <= numerosAleatorios.length; i++) {
+                // Calcular cuántos números aleatorios agregar en esta iteración
+                int cantidadNumeros = (i < numerosAleatorios.length) ? i : numerosAleatorios.length - numerosEscritos;
+
+                // Copiar una porción del arreglo original para ordenar
+                Integer[] numerosActuales = Arrays.stream(Arrays.copyOfRange(numerosAleatorios, 0, numerosEscritos + cantidadNumeros))
+                                                   .boxed().toArray(Integer[]::new);
+
+                // Ordenar según la elección
+                switch (choice) {
+                    case 1:
+                        GeneradorD.gnomeSort(numerosActuales); 
+                        break;
+                    case 2:
+                        GeneradorD.mergeSort(numerosActuales, 0, numerosActuales.length - 1); 
+                        break;
+                    case 3:
+                        GeneradorD.quickSort(numerosActuales, 0, numerosActuales.length - 1); 
+                        break;
+                    case 4:
+                        GeneradorD.radixSort(numerosActuales);
+                        break;
+                    case 5:
+                        GeneradorD.shellSort(numerosActuales); 
+                        break;
+                    default:
+                        System.out.println("Opción no válida.");
+                        break;
+                }
+
+                // Escribir los números ordenados en el archivo
+                for (int num : numerosActuales) {
+                    bw.write(num + "\n");
+                }
+
+                // Actualizar el contador de números escritos en el archivo
+                numerosEscritos += cantidadNumeros;
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
         scanner.close();
     }
 }
+
+
