@@ -1,4 +1,6 @@
 /**
+ * Fernando Hernandez
+ * Nicolás Concuá
  * Clase principal que ejecuta el programa. Ofrece un menú para que el usuario
  * seleccione uno de los algoritmos de ordenamiento disponibles para ordenar
  * un conjunto de 3000 números enteros aleatorios. Los resultados se pueden guardar
