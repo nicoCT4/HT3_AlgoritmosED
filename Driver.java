@@ -22,9 +22,13 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Driver {
     public static void main(String[] args) {
+        Scanner Scanner= new Scanner(System.in);
+        System.out.println("Presione cualquier tecla para iniciar");
+        String tecla = Scanner.nextLine();
         // Generar 3000 números aleatorios
         Integer[] numerosAleatorios = Arrays.stream(Orden.generarNumerosAleatorios(3000)).boxed().toArray(Integer[]::new);
 
@@ -82,9 +86,3 @@ public class Driver {
         }
     }
 }
-
-
-
-
-
-
