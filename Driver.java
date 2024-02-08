@@ -22,71 +22,35 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Scanner;
 
 public class Driver {
     public static void main(String[] args) {
         // Generar 3000 números aleatorios
         Integer[] numerosAleatorios = Arrays.stream(Orden.generarNumerosAleatorios(3000)).boxed().toArray(Integer[]::new);
 
-        // Ejecutar y guardar los resultados de cada algoritmo de ordenamiento
-        ejecutarYGuardar(numerosAleatorios.clone(), "numeros_desordenados.txt", "Desordenados");
+        // Crear y escribir en el archivo de números desordenados
+        Orden.escribirArchivo("numeros_desordenados.txt", numerosAleatorios);
 
-        // Crear copia de los números para cada algoritmo de ordenamiento
-        Integer[] numerosGnome = numerosAleatorios.clone();
-        Integer[] numerosMerge = numerosAleatorios.clone();
-        Integer[] numerosQuick = numerosAleatorios.clone();
-        Integer[] numerosRadix = numerosAleatorios.clone();
-        Integer[] numerosShell = numerosAleatorios.clone();
-
-        // Ordenar y guardar los números con cada algoritmo de ordenamiento
-        ejecutarYGuardar(numerosGnome, "numeros_ordenados_gnome.txt", "Gnome Sort");
-        ejecutarYGuardar(numerosMerge, "numeros_ordenados_merge.txt", "Merge Sort");
-        ejecutarYGuardar(numerosQuick, "numeros_ordenados_quick.txt", "Quick Sort");
-        ejecutarYGuardar(numerosRadix, "numeros_ordenados_radix.txt", "Radix Sort");
-        ejecutarYGuardar(numerosShell, "numeros_ordenados_shell.txt", "Shell Sort");
+        // Ordenar y escribir los números en archivos de texto para cada algoritmo de ordenamiento
+        ejecutarYGuardarOrdenamientos(numerosAleatorios.clone(), "numeros_ordenados_gnome.txt", "Gnome Sort");
+        ejecutarYGuardarOrdenamientos(numerosAleatorios.clone(), "numeros_ordenados_merge.txt", "Merge Sort");
+        ejecutarYGuardarOrdenamientos(numerosAleatorios.clone(), "numeros_ordenados_quick.txt", "Quick Sort");
+        ejecutarYGuardarOrdenamientos(numerosAleatorios.clone(), "numeros_ordenados_radix.txt", "Radix Sort");
+        ejecutarYGuardarOrdenamientos(numerosAleatorios.clone(), "numeros_ordenados_shell.txt", "Shell Sort");
 
         System.out.println("Proceso completado.");
     }
 
     // Método para ejecutar un algoritmo de ordenamiento y guardar el resultado en un archivo de texto
-    private static void ejecutarYGuardar(Integer[] numeros, String nombreArchivo, String nombreSort) {
-        // Ordenar los números según el algoritmo especificado
-        switch (nombreSort) {
-            case "Desordenados":
-                break; // No se realiza ordenamiento
-            case "Gnome Sort":
-                GeneradorD.gnomeSort(numeros);
-                break;
-            case "Merge Sort":
-                GeneradorD.mergeSort(numeros, 0, numeros.length - 1);
-                break;
-            case "Quick Sort":
-                GeneradorD.quickSort(numeros, 0, numeros.length - 1);
-                break;
-            case "Radix Sort":
-                GeneradorD.radixSort(numeros);
-                break;
-            case "Shell Sort":
-                GeneradorD.shellSort(numeros);
-                break;
-            default:
-                System.out.println("Algoritmo no reconocido.");
-                return;
-        }
-        // Guardar los números en un archivo de texto utilizando el buffer
+    private static void ejecutarYGuardarOrdenamientos(Integer[] numeros, String nombreArchivo, String nombreSort) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreArchivo))) {
-            for (int i = 10; i <= numeros.length; i++) {
-                // Calcular cuántos números aleatorios agregar en esta iteración
-                int cantidadNumeros = (i < numeros.length) ? i : numeros.length;
+            for (int i = 1; i <= 3000; i++) {
+                // Tomar un grupo de i + 9 números, empezando con 10
+                int hasta = Math.min(i + 9, 3000);
+                Integer[] numerosActuales = Arrays.copyOfRange(numeros, 0, hasta);
 
-                // Copiar una porción del arreglo original para ordenar
-                Integer[] numerosActuales = Arrays.copyOf(numeros, cantidadNumeros);
-
-                // Ordenar el subconjunto de números
+                // Ordenar el subconjunto de números según el algoritmo especificado
                 switch (nombreSort) {
-                    case "Desordenados":
-                        break; // No se realiza ordenamiento
                     case "Gnome Sort":
                         GeneradorD.gnomeSort(numerosActuales);
                         break;
@@ -111,12 +75,15 @@ public class Driver {
                 for (int num : numerosActuales) {
                     bw.write(num + "\n");
                 }
+                bw.write("----\n"); // Separador para indicar una nueva iteración
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 }
+
+
 
 
 
